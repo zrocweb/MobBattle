@@ -303,6 +303,10 @@ public class MobArena extends Arena{
 		return cfg;
 	}
 	
+	/**
+	 * The configuration file for this arena - Null if not initialized yet!
+	 * @return The configuration file for this arena
+	 */
 	public YamlConfiguration getYamlConiguration(){
 		return cfg;
 	}
@@ -511,13 +515,8 @@ public class MobArena extends Arena{
 			}
 		}
 		
-		//Load waves, ensure it is > 0.
-		if(this.getConfig().getInt("waves") > 0){
-			this.numWaves = this.getConfig().getInt("waves");
-		}
-		else{
-			this.numWaves = 5;
-		}
+		//Load number of waves.
+		this.numWaves = this.getConfig().getInt("waves", 5);
 		
 		//Load exp rate
 		this.expRate = this.getConfig().getDouble("exprate", this.expRate);
