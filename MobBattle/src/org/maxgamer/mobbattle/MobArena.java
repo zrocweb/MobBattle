@@ -149,8 +149,6 @@ public class MobArena extends Arena{
 	
 	@Override
 	public void delete(){
-		super.delete();
-		
 		File cfgFile = new File(MobBattle.instance.getDataFolder(), this.getName() + ".yml");
 		if(cfgFile.exists()){
 			System.out.println("Deleting " + cfgFile.getName());
