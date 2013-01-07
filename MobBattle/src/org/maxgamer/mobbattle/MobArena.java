@@ -34,10 +34,13 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitTask;
 
 import mc.alk.arena.events.matches.MatchMessageEvent;
+import mc.alk.arena.events.prizes.ArenaPrizeEvent;
+import mc.alk.arena.events.prizes.Reward;
 import mc.alk.arena.objects.MatchResult;
 import mc.alk.arena.objects.MatchState;
 import mc.alk.arena.objects.arenas.Arena;
 import mc.alk.arena.objects.events.MatchEventHandler;
+import mc.alk.arena.objects.teams.Team;
 import mc.alk.arena.util.EffectUtil;
 import mc.alk.arena.util.InventoryUtil;
 
@@ -76,16 +79,23 @@ public class MobArena extends Arena{
 	/** The configuration file for this arena */
 	private YamlConfiguration cfg;
 	
+	/** Represents rewards that teams have already acquired */
+	private List<Reward> acquired = new LinkedList<Reward>();
+	
+	/** Represents rewards that teams can acquire.  Form is HashMap<WaveNumber, Reward> */
+	private HashMap<Integer, Reward> rewards = new HashMap<Integer, Reward>();
+	
 	@Override
 	public void init(){
 		super.init();
 		loadMobs();
+		loadRewards();
 		loadConfig();
 	}
 	
 	@Override
 	public void onStart(){
-		super.onStart();
+		rewards.clear();
 		
 		if(this.spawnLocs.isEmpty()){
 			this.getMatch().sendMessage(ChatColor.RED + "Arena " + this.getName() + " has no defined mob spawns! It cannot start!");
@@ -124,6 +134,12 @@ public class MobArena extends Arena{
 					
 					//Increase difficulty of the next wave
 					difficulty += getMatch().getPlayers().size() * difficultyMultiplier;
+					
+					Reward r = rewards.get(wave);
+					if(r != null){
+						acquired.add(r);
+					}
+					
 					//Spawn the next wave in 7 seconds
 					spawner = Bukkit.getScheduler().runTaskLater(MobBattle.instance, new Runnable(){
 						@Override
@@ -180,6 +196,14 @@ public class MobArena extends Arena{
 	public void onVictory(MatchResult result){
 		endGame();
 		clearMobs();
+	}
+	
+	@MatchEventHandler
+	public void onReward(ArenaPrizeEvent e){
+		System.out.println("Reward event fired...");
+		LinkedList<Reward> copy = new LinkedList<Reward>();
+		copy.addAll(acquired);
+		e.setRewards(acquired);
 	}
 	
 	@MatchEventHandler(needsPlayer = false)
@@ -488,6 +512,71 @@ public class MobArena extends Arena{
 			System.out.println("I am creating a dummy zombie with difficulty of 1 to save you.");
 			MobType mt = new MobType(Zombie.class, 1);
 			this.enemies.add(mt);
+		}
+	}
+	
+	public void loadRewards(){
+		System.out.println("Loading rewards...");
+		this.rewards.clear();
+		
+		ConfigurationSection cfg = this.getConfig().getConfigurationSection("rewards");
+		if(cfg == null) return;
+		
+		for(String id : cfg.getKeys(false)){
+			try{
+				int wave = Integer.parseInt(id);
+				
+				ConfigurationSection waveCfg = cfg.getConfigurationSection(id);
+				
+				final LinkedList<ItemStack> items = new LinkedList<ItemStack>();
+				final LinkedList<PotionEffect> effects = new LinkedList<PotionEffect>();
+				final Integer exp = waveCfg.getInt("exp");
+				
+				//Load items
+				List<String> cfgItems = waveCfg.getStringList("items");
+				if(cfgItems != null && !cfgItems.isEmpty()){
+					for(String s : cfgItems){
+						try{
+							items.add(InventoryUtil.parseItem(s));
+						}
+						catch(Exception e){
+							System.out.println("Invalid reward item: " + s);
+						}
+					}
+				}
+				
+				//Load effects
+				List<String> cfgEffects = waveCfg.getStringList("effects");
+				if(cfgEffects != null && !cfgEffects.isEmpty()){
+					for(String s : cfgEffects){
+						try{
+							effects.add(EffectUtil.parseArg(s, 1, 120));
+						}
+						catch(Exception e){
+							System.out.println("Invalid effect item: " + s);
+						}
+					}
+				}
+				
+				Reward r = new Reward(){
+					@Override
+					public void reward(Team team) {
+						System.out.println("Giving rewards...");
+						for(Player p : team.getBukkitPlayers()){
+							p.getInventory().addItem(items.toArray(new ItemStack[items.size()]));
+							p.addPotionEffects(effects);
+							p.giveExp(exp);
+							System.out.println("Rewarded: " + p.getName());
+						}
+					}
+				};
+				
+				this.rewards.put(wave, r);
+			}
+			catch(NumberFormatException e){
+				System.out.println("Cannot load wave: " + id + " - Must be a number.");
+				continue;
+			}
 		}
 	}
 	

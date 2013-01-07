@@ -63,6 +63,27 @@
 waves: 20
 exprate: 5.0
 difficulty-multiplier: 1
+
+rewards:
+    '1':
+        items:
+          - diamond 1
+    '2':
+        items:
+          - arrow 32
+    '3':
+        exp: 50
+    '4':
+        effects:
+        - SPEED:1:120
+    '5':
+        items:
+          - diamond 4
+          - arrow 32
+        exp: 450
+        effects:
+        - HASTE:1:120
+
 mobs:
     skelly:
       type: Skeleton
