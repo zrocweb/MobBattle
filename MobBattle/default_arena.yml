@@ -1,0 +1,227 @@
+#           Custom Config Example
+# Key words:
+#   Wave: These are random sets of mobs generated automatically. They have a difficulty rating based on the number of players, wave number and difficulty-multiplier.
+#   Difficulty: Each mob has a difficulty rating.  To generate a random wave:
+#               1. A random mob is chosen
+#               2. If the combined difficulty of all selected mobs is higher than the wave difficulty, go to step 1
+#               2. If the mobs difficulty plus all previously chosen mobs difficulty is greater than the waves difficulty, Go to step 1 (AKA, Find an easier mob)
+#               3. If the wave number is < minWave or > maxWave, Go to step 1
+#               4. Spawn the mob
+#               5. If the combined difficulty of all selected mobs is less than the wave difficulty rating, go to step 1.
+#               6. Start wave.
+# #How many waves in this arena?
+# waves: 20
+# #What rate should mobs drop exp at?
+# exprate: 1.0
+# #1 = normal difficulty.  2 = 2x difficulty. 0.5 = easy.  Must be bigger than 0.
+# difficulty-multiplier: 0.8
+# mobs:
+#    #Mob name - For identifying in-game.
+#    skelly:
+#      #Mob type - Any LivingEntity entity from org.bukkit.entity.*
+#      # At time of writing: 
+#      # Hostile: PigZombie, Skeleton, Creeper, Zombie, Bat, Blaze, CaveSpider, EnderDragon (Maybe), Ghast, Giant, Golem, IronGolem, Slime, Silverfish, Spider, Witch, Wither, Wolf
+#      # Friendly: Chicken, Cow, MushroomCow, Ocelot, Pig, Sheep, Snowman, Squid, Villager
+#      # Note that even friendly mobs must die to advance in the next wave.
+#      # These are Case Sensitive! Skeleton will work, skeleton will not!
+#      type: Skeleton
+#      # The difficulty rating of this mob.  Make sure at least 1 mob has a difficulty of 1 at all times during the match!
+#      # - Please!
+#      difficulty: 4
+#      # The minimum wave for this to spawn (Mobs won't spawn before this)
+#      minWave: 0
+#      # The maximum wave for this to spawn (Mobs won't spawn beyond this)
+#      maxWave: 10
+#      # The item this creature wields.  These will never drop. *Unless specified in drops section.
+#      # Some creatures, such as Skeletons, don't get a damage bonus for swords. If you want to increase
+#      # The damage, give them potion effects
+#      # Gives this mob a bow with Power I to wield
+#      weapon: BOW power:1 1
+#      # Gives this mob 1 leather helmet with 50 damage.
+#      helm: LEATHER_HELMET:50 1 
+#      chestplate: LEATHER_CHESTPLATE
+#      leggings: LEATHER_LEGGINGS
+#      boots: GOLD_BOOTS:75 1
+#      # (If this mob is a creeper) Should it be supercharged (Eg struck by lightning).  Has no effect if it is not a creeper.
+#      charged: false
+#      # Valid drop types:
+#      #   - ALL: Means ALL of these drops will be spawned when the mob dies
+#      #   - GUARANTEE_ONE: Means ONE of these drops will be spawned when the mob dies
+#      #   - QUARTER: Means all of these drops have a quarter chance EACH of spawning
+#      #   - HALF: Means all of these drops have a 1/2 chance EACH of spawning
+#      #   - THREE_QUARTERS: Means all of these drops have 3/4 chance EACH of spawning
+#      dropType: ALL
+#      # The items this creature may drop.
+#      drops:
+#      - ARROW 10
+#      - BOW 1
+#      # The potion effects this mob should have
+#      effects:
+#      # Give this mob speed I for 120 seconds.
+#      - speed:1:120
+
+waves: 20
+exprate: 5.0
+difficulty-multiplier: 1
+mobs:
+    skelly:
+      type: Skeleton
+      difficulty: 2
+      minWave: 0
+      maxWave: 10
+      weapon: BOW 1
+      dropType: ALL
+      drops:
+      - POTION:16 5
+      - ARROW 10
+      - BOW 1
+      - STICK 5
+    leather_skelly:
+      type: Skeleton
+      difficulty: 4
+      minWave: 0
+      maxWave: 20
+      chestplate: LEATHER_CHESTPLATE
+      leggings: LEATHER_LEGGINGS
+      boots: LEATHER_BOOTS
+      weapon: BOW 1
+      dropType: HALF
+      drops:
+      - POTION:16 5
+      - LEATHER 1
+      - ARROW 5
+      - STICK 5
+    diamond_skelly:
+      type: Skeleton
+      difficulty: 20
+      minWave: 6
+      maxWave: 20
+      chestplate: DIAMOND_CHESTPLATE
+      leggings: DIAMOND_LEGGINGS
+      boots: DIAMOND_BOOTS
+      weapon: DIAMOND_SWORD 1
+      dropType: ALL
+      drops:
+      - SPECKLED_MELON 2
+      - DIAMOND 3
+      - STICK 5
+      effects:
+      - STRENGTH:1:500
+    zombie:
+      type: Zombie
+      difficulty: 1
+      minWave: 0
+      weapon: WOODEN_SWORD
+      dropType: ALL
+      drops:
+      - LEATHER 5
+      - STICK 5
+      - SPECKLED_MELON 1
+    sword_zombie:
+      type: Zombie
+      difficulty: 2
+      minWave: 0
+      maxWave: 15
+      weapon: IRON_SWORD
+      dropType: ALL
+      drops:
+      - POTION:16 5
+      - IRON_INGOT 4
+      - STICK 5
+      - GRILLED_PORK 2
+    leather_zombie:
+      type: Zombie
+      difficulty: 4
+      minWave: 2
+      maxWave: 18
+      chestplate: LEATHER_CHESTPLATE
+      leggings: LEATHER_LEGGINGS
+      boots: LEATHER_BOOTS
+      weapon: IRON_SWORD
+      dropType: GUARANTEE_ONE
+      drops:
+      - POTION:16 5
+      - LEATHER 5
+      - IRON_INGOT 4
+      - STICK 5
+      - GRILLED_PORK 2
+    diamond_zombie:
+      type: Zombie
+      difficulty: 30
+      minWave: 10
+      maxWave: 25
+      helm: DIAMOND_HELM
+      chestplate: DIAMOND_CHESTPLATE
+      leggings: DIAMOND_LEGGINGS
+      boots: DIAMOND_BOOTS
+      weapon: IRON_SWORD
+      dropType: ALL
+      drops:
+      - DIAMOND 4
+      - IRON_INGOT 4
+      - GRILLED_PORK 2
+    blaze:
+      type: Blaze
+      difficulty: 9
+      minWave: 6
+      maxWave: 25
+      dropType: ALL
+      drops:
+      - BLAZE_POWDER 2
+    pigman:
+      type: PigZombie
+      difficulty: 9
+      minWave: 8
+      maxWave: 25
+      weapon: GOLD_SWORD
+      dropType: ALL
+      drops:
+      - GRILLED_PORK 2
+      - IRON_INGOT 4
+    invisible_pigman:
+      type: PigZombie
+      difficulty: 11
+      minWave: 8
+      maxWave: 25
+      weapon: GOLD_SWORD
+      dropType: ALL
+      drops:
+      - GRILLED_PORK 2
+      - IRON_INGOT 4
+      effects:
+      - INVISIBILITY:1:120
+    spider:
+      type: Spider
+      difficulty: 3
+      minWave: 2
+      maxWave: 15
+      drops:
+      - SPECKLED_MELON 1
+    witch:
+      type: Witch
+      difficulty: 20
+      minWave: 12
+      maxWave: 35
+      dropType: ALL
+      drops:
+      - SPECKLED_MELON 2
+      - BLAZE_POWDER 1
+      - POTION:16 5
+    creeper:
+      type: Creeper
+      difficulty: 4
+      minWave: 2
+      maxWave: 18
+      dropType: GUARANTEE_ONE
+      drops:
+      - POTION:16 5
+      - SPECKLED_MELON 1
+    super_creeper:
+      type: Creeper
+      difficulty: 12
+      minWave: 10
+      maxWave: 30
+      charge: true
+      drops:
+      - GOLDEN_APPLE:1 1
+      dropType: ALL

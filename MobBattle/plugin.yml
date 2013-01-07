@@ -1,0 +1,9 @@
+name: MobBattle
+main: org.maxgamer.mobbattle.MobBattle
+version: 0.3
+depend: [BattleArena]
+authors: [netherfoam]
+
+commands:
+   mobbattle:
+        aliases: [ma, mob]

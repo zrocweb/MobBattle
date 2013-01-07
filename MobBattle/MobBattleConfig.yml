@@ -1,0 +1,43 @@
+configVersion: 2.0
+## for more help configuring see the wiki
+## https://github.com/alkarinv/BattleArena/wiki
+## Change this file to customize your match
+
+MobBattle:
+    enabled: true
+    type: MobBattle
+    database: MobBattle
+    matchTime: 900
+    rated: false
+    prefix: "&a[MobBattle]&e"
+    victoryCondition: NoTeamsLeft
+    nTeams: 1
+    teamSize: 4+
+    onJoin:
+        options: [pvpOff]
+    preReqs:
+        options: []
+    onEnter:
+        options: [storeAll]
+    onLeave:
+        options: [restoreAll]
+    onPrestart:
+        options: []
+    onStart:
+        options: [teleportIn, pvpOff, gameMode=adventure]
+    onSpawn:
+        options: [deEnchant, hunger=20, health=20, giveItems, gameMode=adventure]
+        items: # ignored if options doesnt have "giveItems"
+            - iron_sword: 1
+            - bow: 1 
+            - arrow: 6
+            - leather_chest: 1
+            - leather_leggings: 1
+    onDeath:
+        options: [clearInventory, teleportOut]
+    onVictory:
+        options: []
+    onComplete:
+        options: [teleportOut, clearInventory, wgClearRegion]
+    winner:
+        options: [health=20, hunger=20]
