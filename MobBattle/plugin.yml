@@ -1,6 +1,6 @@
 name: MobBattle
 main: org.maxgamer.mobbattle.MobBattle
-version: 0.3
+version: 0.4
 depend: [BattleArena]
 authors: [netherfoam]
 

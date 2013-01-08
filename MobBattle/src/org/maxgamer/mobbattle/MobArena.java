@@ -566,13 +566,13 @@ public class MobArena extends Arena{
 				};
 				
 				this.rewards.put(wave, r);
-				System.out.println("Loaded " + rewards.size() + " rewards.");
 			}
 			catch(NumberFormatException e){
 				System.out.println("Cannot load wave: " + id + " - Must be a number.");
 				continue;
 			}
 		}
+		System.out.println("Loaded " + rewards.size() + " rewards.");
 	}
 	
 	/** loads the config from scratch.  Must reload config first using MobBattle.instance.reloadConfig() */
