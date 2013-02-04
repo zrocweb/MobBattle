@@ -16,7 +16,7 @@ public class MobBattle extends JavaPlugin{
 		saveDefaultConfig();
 		reloadConfig();
 		
-		BattleArena.registerMatchType(this, "MobBattle", "ma", MobArena.class, new MobArenaExecutor());
+		BattleArena.registerCompetition(this, "MobBattle", "ma", MobArena.class, new MobArenaExecutor());
 	}
 	@Override
 	public void onDisable(){
