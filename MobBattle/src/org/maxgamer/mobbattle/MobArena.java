@@ -30,6 +30,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -478,6 +479,14 @@ public class MobArena extends Arena{
 				String info = value.toString();
 				try{
 					ItemStack i = InventoryUtil.parseItem(info);
+					ItemMeta meta = i.getItemMeta();
+					if(meta != null){
+						List<String> lore = meta.getLore();
+						if(lore == null) lore = new LinkedList<String>();
+						lore.add("MobBattle Item");
+						meta.setLore(lore);
+						i.setItemMeta(meta);
+					}
 					mobType.addDrop(i);
 				}
 				catch(Exception e){
